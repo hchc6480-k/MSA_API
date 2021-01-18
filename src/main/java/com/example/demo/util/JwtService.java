@@ -1,4 +1,4 @@
-package com.example.demo.services;
+package com.example.demo.util;
 
 import com.example.demo.res.UserResDTO;
 import io.jsonwebtoken.JwtBuilder;

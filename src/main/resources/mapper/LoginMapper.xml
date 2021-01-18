@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<mapper namespace="com.example.demo.services.LoginService">
+
+	<!--<insert id="RegistUsr" parameterType="map">
+		INSERT INTO MB_MBR_MGMT(user_id,pwd,mbr_nm,mbr_token,reg_dtime) VALUES(#{user_id},#{pwd},#{mbr_nm},#{mbr_token},now())
+	</insert>-->
+ 
+    <select id="selectUser" parameterType="com.example.demo.entity.UserEntity" resultType="int">
+    /** 유저 정보 조회 */
+        SELECT COUNT(*)
+        FROM MB_MBR_MGMT
+        WHERE USER_ID = #{userId} AND PASSWORD = #{passWord}
+    </select>
+</mapper>

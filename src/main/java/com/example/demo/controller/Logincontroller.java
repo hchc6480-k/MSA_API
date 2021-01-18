@@ -1,13 +1,16 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.UserEntity;
 import com.example.demo.req.GetLoginTokenReqDTO;
-import com.example.demo.res.SetSignInResRsltDTO;
 import com.example.demo.res.GetUserInfoResRsltDTO;
 import com.example.demo.res.ProcesResRsltDTO;
 import com.example.demo.res.UserResDTO;
-import com.example.demo.services.JwtService;
+import com.example.demo.services.LoginService;
+import com.example.demo.util.JwtService;
+import org.apache.catalina.User;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,11 +24,8 @@ public class Logincontroller {
     @Autowired
     private JwtService JwtService;
 
-    @RequestMapping("/")
-    public String test(){
-        System.out.println("ㅌㅔ스트");
-        return "hello";
-    }
+    @Autowired
+    private LoginService LoginService;
 
     @RequestMapping("/setSignIn")
     public ProcesResRsltDTO getLoginToken(GetLoginTokenReqDTO reqDto, HttpServletResponse res){
@@ -38,10 +38,17 @@ public class Logincontroller {
 
         String token = "";
         if(StringUtils.isNotBlank(reqDto.getUserId()) && StringUtils.isNotBlank(reqDto.getPassWord())){
-            //TODO 모든 서비스 구현 해야됨
-            token = JwtService.setAuthToken(resDto);
-            res.setHeader("jwt-auth-token",token);
-            procesResRsltDTO.setState("500");
+            UserEntity entity = new UserEntity();
+            entity.setUserId(reqDto.getUserId());
+            entity.setPassWord(reqDto.getPassWord());
+            //아이디 비밀번호 체크
+            int value = LoginService.selectUser(entity);
+            System.out.println("value:"+value);
+            if(value > 0){
+                token = JwtService.setAuthToken(resDto);
+                res.setHeader("jwt-auth-token",token);
+                procesResRsltDTO.setState("500");
+            }
         }
 
         return procesResRsltDTO;

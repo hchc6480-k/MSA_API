@@ -1,7 +1,6 @@
-package com.example.demo.configure;
+package com.example.demo.config;
 
-import com.example.demo.services.JwtService;
-import io.jsonwebtoken.Jwt;
+import com.example.demo.util.JwtService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
