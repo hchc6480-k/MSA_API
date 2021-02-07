@@ -57,7 +57,7 @@ public class JwtService {
     // 토큰 만료 확인
     public Boolean getExpToken(String jwt){
         try {
-            Claims claims = Jwts.parser().setSigningKey(secretKey.getBytes()).parseClaimsJws(jwt).getBody();
+            Claims claims = getJwtBody(jwt);
 
             Date expiration = claims.getExpiration();
             Date now = new Date();
@@ -73,7 +73,7 @@ public class JwtService {
     }
 
     public Map<String,Object> getUserInfo(String jwt){
-        Claims claims = Jwts.parser().setSigningKey(secretKey.getBytes()).parseClaimsJws(jwt).getBody();
+        Claims claims = getJwtBody(jwt);
         Map<String, Object> value = claims;
 
         return value;
