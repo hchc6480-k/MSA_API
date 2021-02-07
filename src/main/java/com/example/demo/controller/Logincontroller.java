@@ -11,6 +11,8 @@ import org.apache.catalina.User;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,9 +27,19 @@ public class Logincontroller {
     private JwtService JwtService;
 
     @Autowired
+    BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
     private LoginService LoginService;
 
-    @RequestMapping("/setSignIn")
+    @GetMapping("/test")
+    public void test(@RequestParam("jwtToken") String jwtToken){
+        if(JwtService.getExpToken(jwtToken)){
+            System.out.println(JwtService.getUserInfo(jwtToken));
+        }
+    }
+
+    @GetMapping("/setSignIn")
     public ProcesResRsltDTO getLoginToken(GetLoginTokenReqDTO reqDto, HttpServletResponse res){
         ProcesResRsltDTO procesResRsltDTO = new ProcesResRsltDTO();
         procesResRsltDTO.setState("400");
